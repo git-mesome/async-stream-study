@@ -1,15 +1,10 @@
 package io.wisoft.asyncmethod;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration.WebFluxConfig;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -40,12 +35,25 @@ public class AsyncController {
             try {
               User result = gitHubLookupService.findUser(user);
               emitter.send(result);
-              logger.info("future2 진행시간 = {}ms", System.currentTimeMillis() - startTime);
+              logger.info("future1 진행시간 = {}ms", System.currentTimeMillis() - startTime);
             } catch (Exception e) {
               emitter.completeWithError(e);
             }
           }
           , executor);
+
+        CompletableFuture<Void> future2 = CompletableFuture.runAsync(
+            () -> {
+              try {
+                User result = gitHubLookupService.findUserV2(user);
+                emitter.send(result);
+                logger.info("future2 진행시간 = {}ms", System.currentTimeMillis() - startTime);
+              } catch (Exception e) {
+                emitter.completeWithError(e);
+              }
+            }
+            , executor);
+
       CompletableFuture.allOf(future1)
           .thenRun(() -> { // thenRun 안에 전체 진행시간 로깅
             logger.info("전체 진행시간 = {}ms", System.currentTimeMillis() - startTime);
