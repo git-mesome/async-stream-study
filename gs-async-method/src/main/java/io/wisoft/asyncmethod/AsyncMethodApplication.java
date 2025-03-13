@@ -8,22 +8,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @SpringBootApplication
-@EnableAsync
 public class AsyncMethodApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(AsyncMethodApplication.class, args).close();
+    SpringApplication.run(AsyncMethodApplication.class, args);
   }
-
-  @Bean
-  public Executor taskExecutor() {
-    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(2);
-    executor.setMaxPoolSize(2);
-    executor.setQueueCapacity(500);
-    executor.setThreadNamePrefix("GithubLookup-");
-    executor.initialize();
-    return executor;
-  }
-
 }

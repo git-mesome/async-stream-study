@@ -19,15 +19,16 @@ public class GitHubLookupService {
     this.restTemplate = restTemplateBuilder.build();
   }
 
-  @Async
-  public CompletableFuture<User> findUser(String user) throws InterruptedException {
-    logger.info("Looking up " + user);
+  public User findUser(String user) throws InterruptedException {
+    logger.info("Looking up v1 " + user);
 
     String url = String.format("https://api.github.com/users/%s", user);
     User results = restTemplate.getForObject(url, User.class);
 
-    Thread.sleep(1000);
-    return CompletableFuture.completedFuture(results);
+    Thread.sleep(100);
+
+
+    return results;
 
   }
 }
