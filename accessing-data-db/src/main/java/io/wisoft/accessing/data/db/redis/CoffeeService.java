@@ -22,7 +22,8 @@ public class CoffeeService {
   }
 
   public List<Coffee> getAllCoffees() {
-    return StreamSupport.stream(coffeeRepository.findAll().spliterator(), false)
+    return StreamSupport.stream(
+        coffeeRepository.findAll().spliterator(), false)
         .collect(Collectors.toList());
   }
 }
