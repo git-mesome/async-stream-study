@@ -1,4 +1,4 @@
-package io.wisoft.accessing.data.db.redis;
+package io.wisoft.accessing.data.db.sync.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

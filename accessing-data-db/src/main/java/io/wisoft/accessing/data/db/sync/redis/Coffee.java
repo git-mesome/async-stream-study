@@ -1,4 +1,4 @@
-package io.wisoft.accessing.data.db.redis;
+package io.wisoft.accessing.data.db.sync.redis;
 
 import java.io.Serializable;
 import org.springframework.data.annotation.Id;

@@ -1,4 +1,4 @@
-package io.wisoft.accessing.data.db.redis;
+package io.wisoft.accessing.data.db.sync.redis;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +35,5 @@ public class CoffeeController {
     List<Coffee> coffees = coffeeService.getAllCoffees();
     return new ResponseEntity<>(coffees, HttpStatus.OK);
   }
+
 }
