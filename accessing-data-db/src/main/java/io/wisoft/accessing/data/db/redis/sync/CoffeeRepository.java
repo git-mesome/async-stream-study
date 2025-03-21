@@ -1,4 +1,4 @@
-package io.wisoft.accessing.data.db.sync.redis;
+package io.wisoft.accessing.data.db.redis.sync;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
