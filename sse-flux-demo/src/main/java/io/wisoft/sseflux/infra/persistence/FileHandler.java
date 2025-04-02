@@ -1,4 +1,4 @@
-package io.wisoft.sseflux.infra;
+package io.wisoft.sseflux.infra.persistence;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;

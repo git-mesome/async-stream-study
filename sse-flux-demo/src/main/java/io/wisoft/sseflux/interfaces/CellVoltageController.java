@@ -1,9 +1,10 @@
 package io.wisoft.sseflux.interfaces;
 
-import io.wisoft.sseflux.application.CellVoltageEventService;
+import io.wisoft.sseflux.application.service.CellVoltageEventService;
 import io.wisoft.sseflux.application.dto.request.ESSData;
 import io.wisoft.sseflux.application.dto.response.CellMetrics;
-import io.wisoft.sseflux.infra.FileHandler;
+import io.wisoft.sseflux.domain.event.AbnormalCellVoltage;
+import io.wisoft.sseflux.infra.persistence.FileHandler;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -32,14 +33,27 @@ public class CellVoltageController {
     List<ESSData> essData = fileHandler.readEssData("ess.jsonc");
     List<CellMetrics> cellData = extractCellDataFromEss(essData);
 
-    return Flux.merge(createCellMetricsStream(cellData), sendHeartbeat());
+    return Flux.merge(
+        createCellMetricsStream(cellData),
+        sendAbnormalCellVoltage(),
+        sendHeartbeat()
+    );
+  }
+
+  private Flux<ServerSentEvent<AbnormalCellVoltage>> sendAbnormalCellVoltage() throws IOException {
+    return eventService.getAbnormalCellVoltageEvents()
+        .map(abnormalEvent -> ServerSentEvent.<AbnormalCellVoltage>builder()
+            .event("abnormal-cell-voltage-alert")
+            .data(abnormalEvent)
+            .build());
   }
 
   private Flux<ServerSentEvent<?>> createCellMetricsStream(List<CellMetrics> cellMetrics) {
     return Flux.fromIterable(cellMetrics)
         .delayElements(Duration.ofSeconds(1))
         .map(metrics -> {
-          eventService.recordAbnormalCellVoltage(metrics.rackId(), metrics.moduleId(), metrics.cellVoltage());
+          eventService.recordAbnormalCellVoltage(metrics.rackId(), metrics.moduleId(),
+              metrics.cellVoltage());
           return ServerSentEvent.<CellMetrics>builder()
               .event("cell-update")
               .data(metrics)

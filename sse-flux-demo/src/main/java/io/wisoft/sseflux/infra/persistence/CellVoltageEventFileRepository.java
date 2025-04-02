@@ -1,6 +1,6 @@
-package io.wisoft.sseflux.infra;
+package io.wisoft.sseflux.infra.persistence;
 
-import io.wisoft.sseflux.domain.CellVoltageEventRepository;
+import io.wisoft.sseflux.domain.repository.CellVoltageEventRepository;
 import io.wisoft.sseflux.domain.event.AbnormalCellVoltage;
 import java.util.List;
 import org.springframework.stereotype.Repository;

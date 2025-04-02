@@ -1,4 +1,4 @@
-package io.wisoft.sseflux.domain;
+package io.wisoft.sseflux.domain.repository;
 
 import io.wisoft.sseflux.domain.event.AbnormalCellVoltage;
 import java.util.List;
