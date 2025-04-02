@@ -1,4 +1,4 @@
-package io.wisoft.sseflux.dto;
+package io.wisoft.sseflux.application.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
